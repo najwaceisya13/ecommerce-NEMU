@@ -1,0 +1,409 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+:root {
+  --font-sans: 'Inter', system-ui, sans-serif;
+
+  /* FAMSWORLD-style palette */
+  --color-primary: #0f1923;       /* very dark navy */
+  --color-secondary: #162032;     /* dark navy */
+  --color-accent: #f47c20;        /* vivid orange */
+  --color-accent-hover: #e06910;
+  --color-accent-light: #fff3e8;
+  --color-gold: #f5c842;
+  --color-surface: #ffffff;
+  --color-surface-2: #f5f6fa;
+  --color-border: #e4e6ef;
+  --color-text: #1a1f36;
+  --color-text-muted: #6b7280;
+  --color-text-light: #9ca3af;
+  --radius: 8px;
+  --radius-lg: 14px;
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
+  --shadow: 0 4px 20px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.14);
+  --shadow-xl: 0 20px 60px rgba(0,0,0,0.18);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  background: var(--color-surface-2);
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-surface-2); }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #ccc; }
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInLeft {
+  from { opacity: 0; transform: translateX(-24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes fadeInRight {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.75; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-12px); }
+}
+@keyframes ticker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-fade-in      { animation: fadeIn 0.55s ease both; }
+.animate-fade-in-left { animation: fadeInLeft 0.5s ease both; }
+.animate-fade-in-right{ animation: fadeInRight 0.5s ease both; }
+.animate-float        { animation: float 4s ease-in-out infinite; }
+
+/* ============================================================
+   TYPOGRAPHY UTILITIES
+   ============================================================ */
+.gradient-text {
+  background: linear-gradient(130deg, var(--color-accent) 0%, var(--color-gold) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================================================
+   GLASSMORPHISM
+   ============================================================ */
+.glass-card {
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.55);
+  box-shadow: var(--shadow);
+}
+.glass-dark {
+  background: rgba(15,25,35,0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--color-accent);
+  color: white;
+  padding: 11px 26px;
+  border-radius: var(--radius);
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.22s ease;
+  text-decoration: none;
+  letter-spacing: 0.01em;
+}
+.btn-primary:hover {
+  background: var(--color-accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(244,124,32,0.35);
+}
+.btn-primary:active { transform: translateY(0); }
+
+.btn-dark {
+  background: var(--color-primary);
+  color: white;
+}
+.btn-dark:hover {
+  background: #1e2d42;
+  box-shadow: 0 8px 24px rgba(15,25,35,0.4);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 2px solid var(--color-accent);
+  color: var(--color-accent);
+}
+.btn-outline:hover {
+  background: var(--color-accent);
+  color: white;
+}
+
+.btn-outline-white {
+  background: transparent;
+  border: 2px solid rgba(255,255,255,0.5);
+  color: white;
+}
+.btn-outline-white:hover {
+  background: rgba(255,255,255,0.12);
+  border-color: white;
+}
+
+/* ============================================================
+   FORM INPUTS
+   ============================================================ */
+.input-field {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius);
+  font-size: 15px;
+  font-family: var(--font-sans);
+  background: var(--color-surface);
+  color: var(--color-text);
+  transition: all 0.2s ease;
+  outline: none;
+}
+.input-field:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(244,124,32,0.12);
+}
+.input-field::placeholder { color: var(--color-text-muted); }
+
+/* ============================================================
+   PRODUCT CARD
+   ============================================================ */
+.product-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+  transition: all 0.28s ease;
+  cursor: pointer;
+  position: relative;
+}
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+  border-color: transparent;
+}
+.product-card .product-image {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  background: linear-gradient(135deg, #f0ede8, #e8e4de);
+}
+
+/* ============================================================
+   BADGE
+   ============================================================ */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.badge-success { background: #dcfce7; color: #166534; }
+.badge-warning { background: #fef3c7; color: #92400e; }
+.badge-danger  { background: #fee2e2; color: #991b1b; }
+.badge-info    { background: #dbeafe; color: #1e40af; }
+.badge-neutral { background: #f3f4f6; color: #374151; }
+.badge-orange  { background: var(--color-accent-light); color: var(--color-accent); }
+
+/* ============================================================
+   SKELETON LOADER
+   ============================================================ */
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
+
+/* ============================================================
+   CATEGORY CARD
+   ============================================================ */
+/* ============================================================
+   SERVER-COMPONENT-SAFE HOVER CLASSES
+   (replaces onMouseEnter/onMouseLeave in Server Components)
+   ============================================================ */
+
+/* Promo banner cards */
+.promo-banner {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.promo-banner:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-xl);
+}
+
+/* "Why Choose Us" dark feature cards */
+.feature-dark-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 28px 24px;
+  text-align: center;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+.feature-dark-card:hover {
+  background: rgba(244,124,32,0.1);
+  border-color: rgba(244,124,32,0.25);
+}
+
+/* Footer nav links */
+.footer-link {
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  font-size: 13px;
+  transition: color 0.2s ease;
+}
+.footer-link:hover { color: var(--color-accent); }
+
+/* Footer bottom policy links */
+.footer-policy-link {
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.footer-policy-link:hover { color: rgba(255,255,255,0.8); }
+
+/* Social icon buttons in footer */
+.social-icon-btn {
+  width: 34px; height: 34px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,0.6);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.social-icon-btn:hover {
+  background: var(--color-accent);
+  color: white;
+  border-color: var(--color-accent);
+}
+
+/* Product card "Add to Cart" button */
+.add-to-cart-btn {
+  margin-top: 12px;
+  background: var(--color-primary);
+  color: white;
+  border-radius: 6px;
+  padding: 9px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  transition: background 0.2s ease;
+  letter-spacing: 0.03em;
+}
+.add-to-cart-btn:hover { background: var(--color-accent); }
+
+/* Navbar category links */
+.nav-cat-link {
+  padding: 13px 16px;
+  color: rgba(255,255,255,0.82);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  transition: color 0.2s, background 0.2s;
+  white-space: nowrap;
+}
+.nav-cat-link:hover {
+  color: white;
+  background: rgba(255,255,255,0.07);
+}
+
+/* Navbar icon buttons */
+.nav-icon-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 10px;
+  font-weight: 600;
+  transition: background 0.2s;
+  position: relative;
+}
+.nav-icon-btn:hover { background: var(--color-surface-2); }
+.nav-icon-btn.highlight {
+  color: var(--color-accent);
+  background: var(--color-accent-light);
+}
+
+
+/* ============================================================
+   TOP ANNOUNCEMENT BAR (TICKER)
+   ============================================================ */
+.ticker-wrap {
+  overflow: hidden;
+  white-space: nowrap;
+}
+.ticker-inner {
+  display: inline-block;
+  animation: ticker 28s linear infinite;
+}
+
+/* ============================================================
+   SECTION DIVIDERS
+   ============================================================ */
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-accent-light);
+  color: var(--color-accent);
+  border-radius: 6px;
+  padding: 4px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-size: clamp(24px, 3.5vw, 36px);
+  font-weight: 800;
+  color: var(--color-text);
+  line-height: 1.2;
+}
+
+/* Category card */
+.category-card {
+  border-radius: var(--radius-lg);
+  transition: all 0.28s ease;
+  cursor: pointer;
+}
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow);
+}
