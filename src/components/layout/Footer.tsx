@@ -14,6 +14,7 @@ export default function Footer() {
         }}
       >
         <div
+          className="footer-grid"
           style={{
             maxWidth: 1280,
             margin: "0 auto",

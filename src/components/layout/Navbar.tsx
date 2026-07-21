@@ -56,6 +56,7 @@ export default function Navbar() {
         }}
       >
         <div
+          className="top-info-bar"
           style={{
             maxWidth: 1280,
             margin: "0 auto",
@@ -172,6 +173,7 @@ export default function Navbar() {
         }}
       >
         <div
+          className="navbar-main-row"
           style={{
             maxWidth: 1280,
             margin: "0 auto",
@@ -236,6 +238,7 @@ export default function Navbar() {
 
           {/* Search Bar */}
           <div
+            className="navbar-search-box"
             style={{
               flex: 1,
               maxWidth: 560,
@@ -342,6 +345,7 @@ export default function Navbar() {
         }}
       >
         <div
+          className="nav-scroll-categories"
           style={{
             maxWidth: 1280,
             margin: "0 auto",

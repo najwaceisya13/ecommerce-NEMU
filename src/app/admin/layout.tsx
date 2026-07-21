@@ -8,7 +8,7 @@ export default function AdminLayout({
 }) {
   return (
     <AuthProvider>
-      <div className="flex min-h-screen" style={{ background: "var(--color-surface-2)" }}>
+      <div className="admin-layout-container flex min-h-screen" style={{ background: "var(--color-surface-2)" }}>
         <AdminSidebar />
 
         <main className="flex-1 p-10" style={{ overflowY: "auto", maxHeight: "100vh" }}>

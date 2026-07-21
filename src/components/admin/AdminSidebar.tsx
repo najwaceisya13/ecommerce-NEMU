@@ -15,7 +15,7 @@ export default function AdminSidebar() {
   ];
 
   return (
-    <aside style={{
+    <aside className="admin-sidebar-nav" style={{
       width: "260px",
       borderRight: "1px solid var(--color-border)",
       background: "var(--color-primary)",

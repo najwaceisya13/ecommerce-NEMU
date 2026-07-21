@@ -63,7 +63,7 @@ export default async function ProductDetailPage({
         Kembali ke Produk
       </Link>
 
-      <div style={{
+      <div className="detail-grid" style={{
         display: "grid",
         gridTemplateColumns: "1fr 1fr",
         gap: "64px",

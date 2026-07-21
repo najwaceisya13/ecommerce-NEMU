@@ -407,3 +407,140 @@ body {
   transform: translateY(-5px);
   box-shadow: var(--shadow);
 }
+
+/* ============================================================
+   RESPONSIVE MEDIA QUERIES (MOBILE & TABLET OPTIMIZATIONS)
+   ============================================================ */
+
+/* Mobile category horizontal scroll bar */
+.nav-scroll-categories {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  -webkit-overflow-scrolling: touch;
+}
+.nav-scroll-categories::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Tablet (max-width: 1024px) */
+@media (max-width: 1024px) {
+  .hero-grid {
+    grid-template-columns: 1fr !important;
+    text-align: center;
+    gap: 32px !important;
+  }
+  .hero-left-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .hero-stats {
+    justify-content: center !important;
+  }
+  .footer-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 32px !important;
+  }
+  .promo-banners-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .admin-layout-container {
+    flex-direction: column !important;
+  }
+  .admin-sidebar-nav {
+    width: 100% !important;
+    min-height: auto !important;
+    position: relative !important;
+    padding: 16px 20px !important;
+  }
+}
+
+/* Mobile (max-width: 768px) */
+@media (max-width: 768px) {
+  /* General padding scaling */
+  section {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  
+  /* Top info bar */
+  .top-info-bar {
+    justify-content: center !important;
+    text-align: center;
+  }
+  
+  /* Navbar logo & search row */
+  .navbar-main-row {
+    flex-wrap: wrap !important;
+    height: auto !important;
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+    gap: 12px !important;
+  }
+  .navbar-search-box {
+    order: 3;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  /* Product grid on mobile: 2 items per row for mobile shopping */
+  .products-responsive-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  /* Category grid on mobile */
+  .categories-responsive-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  /* Features strip */
+  .features-strip-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+  .features-strip-item {
+    border-right: none !important;
+    padding: 12px 8px !important;
+  }
+
+  /* Footer on small mobile */
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+  }
+
+  /* Detail page 2-column to 1-column */
+  .detail-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+
+  /* Promo strip 40% OFF */
+  .promo-strip-flex {
+    flex-direction: column !important;
+    text-align: center;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    width: 100%;
+  }
+}
+
+/* Small phones (max-width: 480px) */
+@media (max-width: 480px) {
+  .categories-responsive-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .section-title {
+    font-size: 24px !important;
+  }
+}
+

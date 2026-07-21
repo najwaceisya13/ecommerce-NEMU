@@ -101,9 +101,9 @@ export default async function HomePage() {
         <div style={{ position: "absolute", top: -80, right: -80, width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(244,124,32,0.18) 0%, transparent 70%)", pointerEvents: "none" }} />
         <div style={{ position: "absolute", bottom: -60, left: "30%", width: 300, height: 300, borderRadius: "50%", background: "radial-gradient(circle, rgba(245,200,66,0.12) 0%, transparent 70%)", pointerEvents: "none" }} />
 
-        <div style={{ maxWidth: 1280, margin: "0 auto", width: "100%", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40, alignItems: "center", minHeight: 520, position: "relative", zIndex: 1 }}>
+        <div className="hero-grid" style={{ maxWidth: 1280, margin: "0 auto", width: "100%", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40, alignItems: "center", minHeight: 520, position: "relative", zIndex: 1 }}>
           {/* LEFT: copy */}
-          <div className="animate-fade-in" style={{ paddingTop: 40, paddingBottom: 40 }}>
+          <div className="animate-fade-in hero-left-content" style={{ paddingTop: 40, paddingBottom: 40 }}>
             <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(244,124,32,0.15)", border: "1px solid rgba(244,124,32,0.35)", borderRadius: 999, padding: "5px 14px", marginBottom: 24 }}>
               <Flame size={13} style={{ color: "var(--color-accent)" }} />
               <span style={{ color: "var(--color-accent)", fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" }}>
@@ -111,7 +111,7 @@ export default async function HomePage() {
               </span>
             </div>
 
-            <h1 style={{ fontSize: "clamp(36px, 4.5vw, 60px)", fontWeight: 900, color: "white", lineHeight: 1.1, marginBottom: 20, letterSpacing: "-0.02em" }}>
+            <h1 style={{ fontSize: "clamp(32px, 4.5vw, 60px)", fontWeight: 900, color: "white", lineHeight: 1.1, marginBottom: 20, letterSpacing: "-0.02em" }}>
               TEMUKAN APA AJA,{" "}
               <span style={{ color: "var(--color-accent)" }}>BELANJA</span>{" "}
               SESUKAMU.
@@ -122,7 +122,7 @@ export default async function HomePage() {
               dari fashion, elektronik, hingga aksesoris. Aman, cepat, terpercaya.
             </p>
 
-            <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+            <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>
               <Link href="/products" className="btn-primary" style={{ padding: "14px 32px", fontSize: 15, borderRadius: 8 }}>
                 Belanja Sekarang <ArrowRight size={18} />
               </Link>
@@ -132,7 +132,7 @@ export default async function HomePage() {
             </div>
 
             {/* Stats */}
-            <div style={{ display: "flex", gap: 32, marginTop: 48, padding: "20px 0", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+            <div className="hero-stats" style={{ display: "flex", gap: 32, marginTop: 48, padding: "20px 0", borderTop: "1px solid rgba(255,255,255,0.08)", flexWrap: "wrap" }}>
               {[
                 { num: "500+", label: "Produk" },
                 { num: "10K+", label: "Pelanggan" },
@@ -180,14 +180,14 @@ export default async function HomePage() {
 
       {/* ===== FEATURES STRIP ===== */}
       <section style={{ background: "white", borderBottom: "1px solid var(--color-border)", padding: "0 24px" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
+        <div className="features-strip-grid" style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
           {[
             { icon: <Truck size={20} />, title: "Gratis Ongkir", desc: "Pembelian min. Rp 200rb" },
             { icon: <ShieldCheck size={20} />, title: "Aman & Terpercaya", desc: "2FA + enkripsi data" },
             { icon: <RefreshCw size={20} />, title: "Retur 30 Hari", desc: "Garansi uang kembali" },
             { icon: <Headphones size={20} />, title: "24/7 Support", desc: "Chat kapan saja" },
           ].map(({ icon, title, desc }, idx) => (
-            <div key={title} style={{ display: "flex", alignItems: "center", gap: 14, padding: "18px 24px", borderRight: idx < 3 ? "1px solid var(--color-border)" : "none" }}>
+            <div key={title} className="features-strip-item" style={{ display: "flex", alignItems: "center", gap: 14, padding: "18px 24px", borderRight: idx < 3 ? "1px solid var(--color-border)" : "none" }}>
               <div style={{ width: 44, height: 44, borderRadius: 10, background: "var(--color-accent-light)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--color-accent)", flexShrink: 0 }}>
                 {icon}
               </div>
@@ -246,7 +246,7 @@ export default async function HomePage() {
 
       {/* ===== PROMO BANNERS ===== */}
       <section style={{ padding: "48px 24px" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+        <div className="promo-banners-grid" style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
           {PROMO_BANNERS.map((b) => (
             <Link
               key={b.title}
@@ -289,7 +289,7 @@ export default async function HomePage() {
 
       {/* ===== PROMO STRIP ===== */}
       <section style={{ background: "linear-gradient(100deg, #0f1923 0%, #f47c20 100%)", padding: "36px 24px" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 20 }}>
+        <div className="promo-strip-flex" style={{ maxWidth: 1280, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 20 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
             <div style={{ fontSize: 48, fontWeight: 900, color: "white", lineHeight: 1 }}>
               UP TO <span style={{ color: "var(--color-gold)" }}>40%</span> OFF
@@ -384,7 +384,7 @@ function ProductGrid({
   products: Awaited<ReturnType<typeof getFeaturedProducts>>;
 }) {
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 20 }}>
+    <div className="products-responsive-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 20 }}>
       {products.map((product, idx) => (
         <Link key={product.id} href={`/products/${product.slug}`} style={{ textDecoration: "none" }}>
           <div className="product-card">
