@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcrypt";
 import { z } from "zod";
+import { generateSecret, generateURI } from "otplib";
+import QRCode from "qrcode";
 
 const registerSchema = z.object({
   name: z.string().min(2, "Nama minimal 2 karakter"),
@@ -33,16 +35,35 @@ export async function POST(req: NextRequest) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Generate 2FA secret langsung saat registrasi
+    const twoFactorSecret = generateSecret();
+    const otpAuthUrl = generateURI({
+      label: email,
+      issuer: "NEMU Shop",
+      secret: twoFactorSecret,
+    });
+    const qrCodeDataUrl = await QRCode.toDataURL(otpAuthUrl);
+
     const user = await prisma.user.create({
       data: {
         name,
         email,
         password: hashedPassword,
+        twoFactorSecret,       // Simpan secret, belum diaktifkan
+        twoFactorEnabled: false,
       },
       select: { id: true, name: true, email: true, role: true },
     });
 
-    return NextResponse.json({ message: "Registrasi berhasil", user }, { status: 201 });
+    return NextResponse.json(
+      {
+        message: "Registrasi berhasil",
+        user,
+        qrCode: qrCodeDataUrl,
+        secret: twoFactorSecret,
+      },
+      { status: 201 }
+    );
   } catch (error) {
     console.error("Register error:", error);
     return NextResponse.json({ error: "Terjadi kesalahan server" }, { status: 500 });

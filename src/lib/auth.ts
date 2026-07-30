@@ -39,6 +39,43 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           throw new Error("Email atau password salah");
         }
 
+        // Jika user belum setup 2FA sama sekali → wajib setup sekarang
+        if (!user.twoFactorEnabled && !user.twoFactorSecret) {
+          const { generateSecret, generateURI } = await import("otplib");
+          const QRCode = (await import("qrcode")).default;
+
+          const secret = generateSecret();
+          const otpAuthUrl = generateURI({
+            label: user.email,
+            issuer: "NEMU Shop",
+            secret,
+          });
+          const qrCodeDataUrl = await QRCode.toDataURL(otpAuthUrl);
+
+          // Simpan secret ke database (belum aktif)
+          await prisma.user.update({
+            where: { id: user.id },
+            data: { twoFactorSecret: secret },
+          });
+
+          throw new Error(`2FA_SETUP_REQUIRED::${qrCodeDataUrl}::${user.email}`);
+        }
+
+        // Jika 2FA sudah setup tapi belum diaktifkan (QR sudah di-generate tapi OTP belum dikonfirmasi)
+        if (!user.twoFactorEnabled && user.twoFactorSecret) {
+          const { generateURI } = await import("otplib");
+          const QRCode = (await import("qrcode")).default;
+
+          const otpAuthUrl = generateURI({
+            label: user.email,
+            issuer: "NEMU Shop",
+            secret: user.twoFactorSecret,
+          });
+          const qrCodeDataUrl = await QRCode.toDataURL(otpAuthUrl);
+
+          throw new Error(`2FA_SETUP_REQUIRED::${qrCodeDataUrl}::${user.email}`);
+        }
+
         // Jika 2FA diaktifkan, verifikasi OTP
         if (user.twoFactorEnabled && user.twoFactorSecret) {
           if (!credentials.totpCode) {
