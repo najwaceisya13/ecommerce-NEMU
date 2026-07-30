@@ -19,60 +19,36 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          throw new Error("Email dan password diperlukan");
+          return null;
         }
 
         const user = await prisma.user.findUnique({
           where: { email: credentials.email as string },
         });
 
-        if (!user) {
-          throw new Error("Email atau password salah");
-        }
+        if (!user) return null;
 
         const isValid = await bcrypt.compare(
           credentials.password as string,
           user.password
         );
 
-        if (!isValid) {
-          throw new Error("Email atau password salah");
-        }
+        if (!isValid) return null;
 
-        // Jika user belum setup 2FA sama sekali → generate secret dulu, lalu wajib setup
-        if (!user.twoFactorEnabled && !user.twoFactorSecret) {
-          const { generateSecret } = await import("otplib");
-          const secret = generateSecret();
-
-          // Simpan secret ke database (belum aktif)
-          await prisma.user.update({
-            where: { id: user.id },
-            data: { twoFactorSecret: secret },
-          });
-
-          // Hanya kirim email — QR diambil via endpoint /api/auth/2fa/get-setup-qr
-          throw new Error(`2FA_SETUP_REQUIRED::${user.email}`);
-        }
-
-        // Jika 2FA sudah setup (secret ada) tapi belum diaktifkan
-        if (!user.twoFactorEnabled && user.twoFactorSecret) {
-          // Hanya kirim email — QR diambil via endpoint /api/auth/2fa/get-setup-qr
-          throw new Error(`2FA_SETUP_REQUIRED::${user.email}`);
-        }
-
-        // Jika 2FA diaktifkan, verifikasi OTP
+        // Jika 2FA sudah aktif, verifikasi OTP wajib
         if (user.twoFactorEnabled && user.twoFactorSecret) {
-          if (!credentials.totpCode) {
-            throw new Error("TOTP_REQUIRED");
-          }
+          if (!credentials.totpCode) return null;
+
           const isValidTotp = verifySync({
             token: credentials.totpCode as string,
             secret: user.twoFactorSecret,
           });
-          if (!isValidTotp) {
-            throw new Error("Kode 2FA tidak valid");
-          }
+
+          if (!isValidTotp) return null;
         }
+
+        // Jika 2FA belum aktif, tolak login (user harus selesaikan setup 2FA dulu)
+        if (!user.twoFactorEnabled) return null;
 
         return {
           id: user.id,
