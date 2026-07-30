@@ -39,18 +39,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           throw new Error("Email atau password salah");
         }
 
-        // Jika user belum setup 2FA sama sekali → wajib setup sekarang
+        // Jika user belum setup 2FA sama sekali → generate secret dulu, lalu wajib setup
         if (!user.twoFactorEnabled && !user.twoFactorSecret) {
-          const { generateSecret, generateURI } = await import("otplib");
-          const QRCode = (await import("qrcode")).default;
-
+          const { generateSecret } = await import("otplib");
           const secret = generateSecret();
-          const otpAuthUrl = generateURI({
-            label: user.email,
-            issuer: "NEMU Shop",
-            secret,
-          });
-          const qrCodeDataUrl = await QRCode.toDataURL(otpAuthUrl);
 
           // Simpan secret ke database (belum aktif)
           await prisma.user.update({
@@ -58,22 +50,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             data: { twoFactorSecret: secret },
           });
 
-          throw new Error(`2FA_SETUP_REQUIRED::${qrCodeDataUrl}::${user.email}`);
+          // Hanya kirim email — QR diambil via endpoint /api/auth/2fa/get-setup-qr
+          throw new Error(`2FA_SETUP_REQUIRED::${user.email}`);
         }
 
-        // Jika 2FA sudah setup tapi belum diaktifkan (QR sudah di-generate tapi OTP belum dikonfirmasi)
+        // Jika 2FA sudah setup (secret ada) tapi belum diaktifkan
         if (!user.twoFactorEnabled && user.twoFactorSecret) {
-          const { generateURI } = await import("otplib");
-          const QRCode = (await import("qrcode")).default;
-
-          const otpAuthUrl = generateURI({
-            label: user.email,
-            issuer: "NEMU Shop",
-            secret: user.twoFactorSecret,
-          });
-          const qrCodeDataUrl = await QRCode.toDataURL(otpAuthUrl);
-
-          throw new Error(`2FA_SETUP_REQUIRED::${qrCodeDataUrl}::${user.email}`);
+          // Hanya kirim email — QR diambil via endpoint /api/auth/2fa/get-setup-qr
+          throw new Error(`2FA_SETUP_REQUIRED::${user.email}`);
         }
 
         // Jika 2FA diaktifkan, verifikasi OTP

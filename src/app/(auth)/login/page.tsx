@@ -41,17 +41,30 @@ export default function LoginPage() {
           // User sudah punya 2FA aktif → minta kode OTP
           setStep("totp");
           toast.info("Masukkan kode OTP dari aplikasi authenticator Anda.");
-        } else if (res.error.includes("2FA_SETUP_REQUIRED")) {
-          // Akun lama belum setup 2FA → wajib setup sekarang
-          const parts = res.error.split("::");
-          const qrData = parts[1] || "";
-          const userEmail = parts[2] || email;
 
-          setSetupQrCode(qrData);
-          setSetupEmail(userEmail);
-          setStep("setup2fa");
-          setSetupStep("qr");
-          toast.info("Akun Anda perlu mengaktifkan 2FA. Silakan scan QR Code.");
+        } else if (res.error.includes("2FA_SETUP_REQUIRED")) {
+          // Akun belum setup 2FA → ambil QR dari endpoint terpisah
+          const parts = res.error.split("::");
+          const userEmail = parts[1] || email;
+
+          // Ambil QR code dari endpoint dedikasi
+          const qrRes = await fetch("/api/auth/2fa/get-setup-qr", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: userEmail }),
+          });
+
+          if (qrRes.ok) {
+            const qrData = await qrRes.json();
+            setSetupQrCode(qrData.qrCode);
+            setSetupEmail(userEmail);
+            setStep("setup2fa");
+            setSetupStep("qr");
+            toast.info("Akun Anda perlu mengaktifkan 2FA. Silakan scan QR Code.");
+          } else {
+            toast.error("Gagal memuat QR Code. Coba lagi.");
+          }
+
         } else {
           toast.error(res.error || "Gagal masuk. Periksa email dan password Anda.");
         }
