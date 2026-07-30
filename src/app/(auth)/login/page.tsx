@@ -54,6 +54,23 @@ export default function LoginPage() {
           toast.info("Masukkan kode OTP dari aplikasi authenticator Anda.");
           break;
 
+        case "OK": {
+          // Admin bypass — langsung buat session tanpa 2FA
+          const signInRes = await signIn("credentials", {
+            email,
+            password,
+            redirect: false,
+          });
+          if (signInRes?.ok) {
+            toast.success("Berhasil masuk! Selamat datang.");
+            router.push("/");
+            router.refresh();
+          } else {
+            toast.error("Gagal masuk. Coba lagi.");
+          }
+          break;
+        }
+
         default:
           toast.error("Terjadi kesalahan server. Coba lagi.");
       }

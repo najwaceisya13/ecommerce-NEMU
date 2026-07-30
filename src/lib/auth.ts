@@ -35,6 +35,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         if (!isValid) return null;
 
+        // Admin bypass — tidak perlu 2FA
+        if (user.role === "ADMIN") {
+          return {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            twoFactorEnabled: user.twoFactorEnabled,
+          };
+        }
+
         // Jika 2FA sudah aktif, verifikasi OTP wajib
         if (user.twoFactorEnabled && user.twoFactorSecret) {
           if (!credentials.totpCode) return null;

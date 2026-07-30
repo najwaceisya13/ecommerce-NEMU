@@ -34,6 +34,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ status: "INVALID_CREDENTIALS" }, { status: 401 });
     }
 
+    // Admin bypass 2FA — langsung OK
+    if (user.role === "ADMIN") {
+      return NextResponse.json({ status: "OK" });
+    }
+
     // User belum punya secret sama sekali → generate & simpan secret, tampilkan QR
     if (!user.twoFactorEnabled && !user.twoFactorSecret) {
       const secret = generateSecret();
